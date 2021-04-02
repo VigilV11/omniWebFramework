@@ -1,18 +1,14 @@
+import { User } from './models/User';
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3000';
 
-import { User } from './models/User';
+////////////////////////////////
 
-const user = new User({ id: 1, name: 'Brand new user', age: 0 });
+const user = new User({ id: 2, name: 'VAered', age: 33 });
 
-// console.log(user.get('id'));
+console.log(user.get('name'));
 
-user.on('save', () => {
-  console.log(user.get('name'));
-});
-
-// user.set({ name: 'Vigil V' });
-// console.log(user.get('name'));
+user.on('save', () => console.log('Saved'));
+// user.trigger('change');
 
 user.save();
-// console.log(user.get('name'));

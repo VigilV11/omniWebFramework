@@ -1,30 +1,32 @@
-import { AxiosPromise, AxiosResponse } from 'axios';
-import { Attributes } from './Attributes';
+import { AxiosResponse } from 'axios';
+import { Attribures } from './Attributes';
 import { Eventing } from './Eventing';
 import { Sync } from './Sync';
 
-type Callback = () => void;
-
-interface UserProps {
+export interface UserProps {
   id?: number;
   name?: string;
   age?: number;
 }
 
 export class User {
-  public events: Eventing = new Eventing();
-  public sync: Sync<UserProps> = new Sync<UserProps>();
-  public attributes: Attributes<UserProps>;
+  attributes: Attribures<UserProps>;
+  events: Eventing = new Eventing();
+  sync: Sync<UserProps> = new Sync();
 
-  constructor(private attrs: UserProps) {
-    this.attributes = new Attributes<UserProps>(attrs);
+  constructor(private userData: UserProps) {
+    this.attributes = new Attribures<UserProps>(userData);
   }
 
   get get() {
     return this.attributes.get;
   }
 
-  // We are returning a reference to the "on" method in "events"
+  set(update: UserProps): void {
+    this.attributes.set(update);
+    this.events.trigger('change');
+  }
+
   get on() {
     return this.events.on;
   }
@@ -33,31 +35,20 @@ export class User {
     return this.events.trigger;
   }
 
-  set(update: UserProps): void {
-    this.attributes.set(update);
-    this.trigger('change');
-  }
-
-  fetch(): void {
-    const id = this.get('id');
-
-    if (id) {
-      this.sync.fetch(id).then((response: AxiosResponse) => {
-        this.set(response.data);
-      });
-    } else {
-      throw new Error('Cannot fetch without an id');
-    }
+  fetch(id: number) {
+    this.sync.fetch(id).then((response: AxiosResponse) => {
+      this.set(response.data);
+    });
   }
 
   save() {
     this.sync
       .save(this.attributes.getAll())
-      .then((response: AxiosResponse) => {
-        this.trigger('save');
+      .then(() => {
+        this.events.trigger('save');
       })
       .catch(() => {
-        this.trigger('error');
+        this.events.trigger('error');
       });
   }
 }

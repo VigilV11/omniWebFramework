@@ -1,8 +1,8 @@
-export class Attributes<T> {
+export class Attribures<T> {
   constructor(private data: T) {}
 
-  get = <K extends keyof T>(key: K): T[K] => {
-    return this.data[key];
+  get = <K extends keyof T>(propName: K): T[K] => {
+    return this.data[propName];
   };
 
   getAll(): T {
