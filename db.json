@@ -1,9 +1,9 @@
 {
   "users": [
     {
-      "name": "Vigil",
-      "age": 33,
-      "id": 1
+      "id": 1,
+      "name": "Brand new user",
+      "age": 0
     },
     {
       "id": 2
