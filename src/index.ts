@@ -3,16 +3,14 @@ axios.defaults.baseURL = 'http://localhost:3000';
 
 import { User } from './models/User';
 
-const user = new User({ id: 1, name: 'Brand new user', age: 0 });
+// const user = User.buildUser({ id: 1, name: 'Yani', age: 23 });
 
-// console.log(user.get('id'));
+// user.on('save', () => console.log('Saved data'));
+// user.save();
 
-user.on('save', () => {
-  console.log(user.get('name'));
-});
+///////////
 
-// user.set({ name: 'Vigil V' });
-// console.log(user.get('name'));
+const collection = User.buildUserCollection();
 
-user.save();
-// console.log(user.get('name'));
+collection.on('change', () => console.log(collection.models));
+collection.fetch();
