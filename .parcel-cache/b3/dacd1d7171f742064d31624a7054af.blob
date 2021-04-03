@@ -1,0 +1,15 @@
+var _axios = require('axios');
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+var _axiosDefault = _parcelHelpers.interopDefault(_axios);
+var _modelsUser = require('./models/User');
+_axiosDefault.default.defaults.baseURL = 'http://localhost:3000';
+const user = _modelsUser.User.buildUser({
+  id: 1,
+  name: 'Vigil',
+  age: 25
+});
+console.log(user.get('name'));
+// user.on('change', () => console.log('Changed'));
+// user.set({ id: 1, name: 'baha', age: 21 });
+user.on('saved', () => console.log('Data saved'));
+user.on('ready', () => user.save());

@@ -1,0 +1,48 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "Model", function () {
+  return Model;
+});
+var _Collection = require('./Collection');
+class Model {
+  // attributes: ModelAttributes<T>;
+  // sync: Sync<T>;
+  // events: Events;
+  allValidIds = [];
+  constructor(attributes, sync, events) {
+    this.attributes = attributes;
+    this.sync = sync;
+    this.events = events;
+    const collection = new _Collection.Collection();
+    collection.fetchAllIds().then(response => {
+      this.allValidIds = response.data.map(item => item.id);
+      this.trigger('ready');
+    });
+  }
+  get get() {
+    return this.attributes.get.bind(this.attributes);
+  }
+  get trigger() {
+    return this.events.trigger.bind(this.events);
+  }
+  get on() {
+    return this.events.on.bind(this.events);
+  }
+  set(update) {
+    this.attributes.set(update);
+    this.trigger('change');
+  }
+  fetch(id) {
+    if (!this.allValidIds.includes(id)) {
+      throw new Error('The id does not exist');
+    }
+    this.sync.fetch(id).then(response => {
+      this.attributes.set(response.data);
+      this.trigger('update');
+    });
+  }
+  save() {
+    console.log(this);
+    this.sync.save(this.attributes.getAll(), this.allValidIds).then(() => this.events.trigger('saved')).catch(() => this.events.trigger('error'));
+  }
+}

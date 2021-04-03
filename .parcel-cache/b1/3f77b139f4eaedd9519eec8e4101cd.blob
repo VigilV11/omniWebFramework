@@ -1,0 +1,17 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "Eventing", function () {
+  return Eventing;
+});
+class Eventing {
+  events = {};
+  on(eventName, callback) {
+    const handlers = this.events[eventName] || [];
+    handlers.push(callback);
+    this.events[eventName] = handlers;
+  }
+  trigger(eventName) {
+    if (!this.events[eventName]) return;
+    this.events[eventName].forEach(event => event());
+  }
+}

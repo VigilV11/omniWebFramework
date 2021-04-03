@@ -1,29 +1,20 @@
 import { ApiSync } from './ApiSync';
 import { Attributes } from './Attributes';
-import { Collection } from './Collection';
 import { Eventing } from './Eventing';
 import { Model } from './Model';
 
-type Callback = () => void;
-
-export interface UserProps {
+interface UserProps {
   id?: number;
   name?: string;
   age?: number;
 }
 
 export class User extends Model<UserProps> {
-  static buildUser(attrs: UserProps): User {
+  static buildUser(attrs: UserProps) {
     return new User(
       new Attributes<UserProps>(attrs),
       new ApiSync<UserProps>(),
       new Eventing()
-    );
-  }
-
-  static buildUserCollection(): Collection<User, UserProps> {
-    return new Collection<User, UserProps>((json: UserProps) =>
-      User.buildUser(json)
     );
   }
 }

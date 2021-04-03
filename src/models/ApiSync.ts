@@ -9,12 +9,11 @@ export class ApiSync<T extends HasId> {
     return axios.get(`/users/${id}`);
   }
 
-  save(data: T): AxiosPromise {
-    const { id } = data;
-    if (id) {
-      return axios.put(`/users/${id}`, data);
-    } else {
-      return axios.post(`/users`, data);
+  save(data: T, allValidIds: number[]): AxiosPromise {
+    if (allValidIds.includes(data.id)) {
+      return axios.put(`/users/${data.id}`, data);
     }
+
+    return axios.post(`/users`, data);
   }
 }
