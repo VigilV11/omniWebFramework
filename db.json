@@ -2,11 +2,16 @@
   "users": [
     {
       "id": 1,
-      "name": "Yani",
-      "age": 23
+      "name": "arruba",
+      "age": 67
     },
     {
       "id": 2
+    },
+    {
+      "id": 3,
+      "name": "dfd",
+      "age": 79
     }
   ]
 }

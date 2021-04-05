@@ -1,0 +1,21 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "UserShow", function () {
+  return UserShow;
+});
+var _View = require('./View');
+class UserShow extends _View.View {
+  regionsMap() {
+    return {
+      userShow: '.user-show',
+      userEdit: '.user-edit'
+    };
+  }
+  template() {
+    return `
+    <h1>User Form</h1>
+    <p>User name: ${this.model.get('name')}</p>
+    <p>User age: ${this.model.get('age')}</p>
+    `;
+  }
+}

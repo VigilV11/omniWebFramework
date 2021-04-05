@@ -1,0 +1,40 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "UserForm", function () {
+  return UserForm;
+});
+class UserForm {
+  constructor(parent) {
+    this.parent = parent;
+  }
+  eventsMap() {
+    return {
+      'click:button': this.onButtonClick
+    };
+  }
+  onButtonClick() {
+    console.log('hi');
+  }
+  template() {
+    return `
+        <div>
+        <h1>User Form</h1>
+        <input />
+        <button onClick={console.log('there')}>Click Me</button>
+        </div>
+      `;
+  }
+  bindEvents() {
+    const allEvents = this.eventsMap();
+    Object.entries(allEvents).forEach(eventComposite => {
+      const [event, element] = eventComposite[0].split(':');
+      document.querySelectorAll('element').forEach(ele => {
+        ele.addEventListener(event, eventComposite[1]);
+      });
+    });
+  }
+  render() {
+    console.log(this.parent);
+    this.parent.insertAdjacentHTML('afterbegin', this.template());
+  }
+}

@@ -1,0 +1,23 @@
+var _axios = require('axios');
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+var _axiosDefault = _parcelHelpers.interopDefault(_axios);
+var _modelsUser = require('./models/User');
+var _viewsUserForm = require('./views/UserForm');
+_axiosDefault.default.defaults.baseURL = 'http://localhost:3000';
+const user = _modelsUser.User.buildUser({
+  id: 1,
+  name: 'Yani',
+  age: 23
+});
+console.log(user.get('name'));
+// user.on('save', () => console.log('Saved data'));
+// user.save();
+// /////////
+// const collection = User.buildUserCollection();
+// collection.on('change', () => console.log(collection.models));
+// collection.fetch();
+const root = document.querySelector('.app-root');
+if (root) {
+  const form = new _viewsUserForm.UserForm(root, user);
+  form.render();
+}
