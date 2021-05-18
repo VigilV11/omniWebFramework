@@ -49,7 +49,7 @@ export class Model<T extends HasId> {
   }
 
   fetch(): void {
-    const id = this.get('id');
+    const id = this.get('id') as number;
 
     if (id) {
       this.sync.fetch(id).then((response: AxiosResponse) => {
@@ -68,6 +68,7 @@ export class Model<T extends HasId> {
       })
       .catch(() => {
         this.trigger('error');
+        console.log('errored');
       });
   }
 }

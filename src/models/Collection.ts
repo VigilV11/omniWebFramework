@@ -3,7 +3,7 @@ import { Eventing } from './Eventing';
 
 // K specifies the structure of the JSON data that we get back
 export class Collection<T, K> {
-  models: T[];
+  models: T[] = [];
   events: Eventing = new Eventing();
 
   // deserialize is a function that takes each json data of type K and turns it into type T

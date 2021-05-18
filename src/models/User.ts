@@ -1,8 +1,12 @@
+import axios from 'axios';
+
 import { ApiSync } from './ApiSync';
 import { Attributes } from './Attributes';
 import { Collection } from './Collection';
 import { Eventing } from './Eventing';
 import { Model } from './Model';
+
+axios.defaults.baseURL = 'http://localhost:3000';
 
 type Callback = () => void;
 

@@ -1,41 +1,41 @@
-import { User, UserProps } from '../models/User';
+import { User } from '../models/User';
 import { View } from './View';
 
-export class UserForm extends View<User, UserProps> {
-  eventsMap(): { [key: string]: () => void } {
+export class UserForm extends View {
+  constructor(public user: User, public parent: Element) {
+    super();
+  }
+
+  mapHandlers(): { [key: string]: () => void } {
     return {
-      'click:.set-age': this.onSetAgeClick,
-      'click:.set-name': this.onSetNameClick,
-      'click:.save-model': this.onSaveClick,
+      'click:.update-name': this.updateNameHandler.bind(this),
+      'click:.set-age': this.updateAgeHandler.bind(this),
+      'click:.save-data': this.saveDataHandler.bind(this),
     };
   }
 
-  onSetAgeClick = (): void => {
-    this.model.setRandomAge();
-  };
+  updateNameHandler() {
+    const nameInput = document.querySelector('.name-input') as HTMLInputElement;
+    const name = nameInput?.value;
+    this.user.set({ name });
+    this.user.trigger('change');
+  }
 
-  onSetNameClick = (): void => {
-    const input = document.querySelector('input');
+  updateAgeHandler() {
+    this.user.setRandomAge();
+  }
 
-    const newName = input.value;
-    // input.value = '';
-    console.log(newName);
-    this.model.set({ name: newName });
-  };
-
-  onSaveClick = (): void => {
-    this.model.save();
-  };
+  saveDataHandler() {
+    this.user.save();
+  }
 
   template(): string {
     return `
-        <div>
-        <h1>User Form</h1>
-        <input placeholder=${this.model.get('name')} />
-        <button class="set-name">Set Name</button>
-        <button class="set-age">Set Random Age</button>
-        <button class="save-model">Save User</button>
-        </div>
-      `;
+    <h1>User Form</h1>
+        <input class='name-input'/>
+        <button class='update-name'>Update name</button>
+        <button class='set-age'>Set random age</button>
+        <button class='save-data'>Save data</button>
+        `;
   }
 }
